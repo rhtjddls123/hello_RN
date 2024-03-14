@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Button,
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,14 +11,19 @@ import {
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState("");
-  const [courseGoals, setCourseGoals] = useState<string[]>([]);
+  const [courseGoals, setCourseGoals] = useState<
+    { text: string; id: string }[]
+  >([]);
 
   const goalInputHandler = (enteredText: string) => {
     setEnteredGoalText(enteredText);
   };
 
   const addGoalHandler = () => {
-    setCourseGoals((curCourseGoals) => [...curCourseGoals, enteredGoalText]);
+    setCourseGoals((curCourseGoals) => [
+      ...curCourseGoals,
+      { text: enteredGoalText, id: Math.random().toString() },
+    ]);
   };
 
   return (
@@ -31,13 +37,15 @@ export default function App() {
         <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
       <View style={styles.goalsContainer}>
-        <ScrollView>
-          {courseGoals.map((goal) => (
-            <View style={styles.goalItem} key={goal}>
-              <Text style={styles.goalText}>{goal}</Text>
+        <FlatList
+          data={courseGoals}
+          renderItem={(itemData) => (
+            <View style={styles.goalItem}>
+              <Text style={styles.goalText}>{itemData.item.text}</Text>
             </View>
-          ))}
-        </ScrollView>
+          )}
+          keyExtractor={(item) => item.id}
+        ></FlatList>
       </View>
     </View>
   );
