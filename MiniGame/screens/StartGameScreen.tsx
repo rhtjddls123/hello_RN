@@ -3,7 +3,11 @@ import { TextInput, View, StyleSheet } from "react-native";
 const StartGameScreen = () => {
   return (
     <View style={styles.inputContainer}>
-      <TextInput style={styles.inputNumber} />
+      <TextInput
+        style={styles.inputNumber}
+        maxLength={2}
+        keyboardType={"number-pad"}
+      />
     </View>
   );
 };
